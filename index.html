@@ -1,44 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
+
+
+    <button class="rockBtn">Rock</button>
+    <button class="scissorsBtn">Scissors</button>
+    <button class="paperBtn">Paper</button>
+
+
+    <div class="score">
+        <p class="humanScore"> Human Score: </p>
+        <p class="computerScore">Computer Score: </p>
+        <p class="winner"> The Winner is: </p>
+    </div>
+
+
+
 
     <script>
 
 
-        function getComputerChoice(){
+        function getComputerChoice() {
             let randomNumber = Math.floor(Math.random() * 9);
-            if(randomNumber >= 0 && randomNumber<=2){
+            if (randomNumber >= 0 && randomNumber <= 2) {
                 return "rock";
             }
-            else if(randomNumber >= 3 && randomNumber <= 5){
+            else if (randomNumber >= 3 && randomNumber <= 5) {
                 return "paper";
             }
-            else if(randomNumber >= 6 && randomNumber <= 8){
+            else if (randomNumber >= 6 && randomNumber <= 8) {
                 return "scissors";
             }
         }
-       //console.log("Computer Choice:" + getComputerChoice());
 
 
 
-        function getHumanChoice(){
-            let userInput = prompt("Please enter your input:");
-            return userInput;
-        }
-        //console.log("Human Choice:" + getHumanChoice());
-
-        function playRound(humanChoice, computerChoice){
+        function playRound(humanChoice, computerChoice) {
             let MyChoice = humanChoice.toLowerCase();
-            if(MyChoice === computerChoice){
+            if (MyChoice === computerChoice) {
                 console.log("Draw! The choices are same");
                 return "draw";
             }
-            else if ((MyChoice === "rock" && computerChoice === "scissors") || (MyChoice === "scissors" && computerChoice ==="paper") || (MyChoice === "paper" && computerChoice === "rock")){
+            else if ((MyChoice === "rock" && computerChoice === "scissors") || (MyChoice === "scissors" && computerChoice === "paper") || (MyChoice === "paper" && computerChoice === "rock")) {
                 console.log("You Won! " + MyChoice + " beats " + computerChoice);
                 return "won";
             }
@@ -49,38 +59,74 @@
         }
 
 
-        function playGame(){
-            let humanScore = 0;
-            let computerScore = 0;
-            let result;
-            let humanSelection;
-            let computerSelection;
 
-            for(let i=0;  i<5; i++){
-                humanSelection = getHumanChoice();
-                computerSelection = getComputerChoice();
-                result = playRound(humanSelection, computerSelection);
-                if(result === "won"){
-                    humanScore++;
-                }
-                else if(result === "lost"){
-                    computerScore++;
-                }
-                else if(result === "draw"){
-                    //Do Nothing
-                }
+
+        let humanScore = 0;
+        let computerScore = 0;
+
+
+        const score = document.querySelector(".score");
+        const Hscore = document.querySelector(".humanScore");
+        const compScore = document.querySelector(".computerScore");
+        const winner = document.querySelector(".winner");
+        winner.textContent = "Winner is: ";
+
+        document.body.addEventListener("click", (e) => {
+
+
+            let result;
+            winner.textContent = "Winner is: ";
+            switch (e.target.className) {
+                case 'rockBtn':
+                    result = playRound("rock", getComputerChoice());
+                    break;
+                case 'scissorsBtn':
+                    result = playRound("scissors", getComputerChoice());
+                    break;
+                case 'paperBtn':
+                    result = playRound("paper", getComputerChoice());
+                    break;
+                default:
+                    return; // Do nothing if a non-button is clicked
             }
 
-            console.log("Human Score: " + humanScore + "---- Computer Score: " + computerScore);
-            console.log("The winner is " + (humanScore > computerScore ? "Human" : "Computer"));
+
+        if (result === "won") {
+            humanScore++;
+            Hscore.textContent = "Human Score: " + humanScore;
+        }
+        else if (result === "lost") {
+            computerScore++;
+            compScore.textContent = "Computer Score" + computerScore;
+        }
+        else if (result === "draw") {
+            //Do Nothing
         }
 
-       
 
-       playGame();
+        if (humanScore === 5) {
+            winner.textContent += "Human";
+            humanScore = 0;
+            computerScore = 0;
+            Hscore.textContent = "Human Score: " + humanScore;
+            compScore.textContent = "Computer Score" + computerScore;
+        }
+
+        else if (computerScore === 5) {
+            winner.textContent += "computer";
+            humanScore = 0;
+            computerScore = 0;
+            Hscore.textContent = "Human Score: " + humanScore;
+            compScore.textContent = "Computer Score" + computerScore;
+        }
+
+    });
+
+
 
 
     </script>
-    
+
 </body>
+
 </html>
